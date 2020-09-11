@@ -1,19 +1,19 @@
 # IIS Configuration
-#
+# 
 # Prerequisites:
 # Set-ExecutionPolicy RemoteSigned
 # Import-Module WebAdministation (or ability to execute)
 # If using server try Import-Module ServerManager
-#
+# 
 # PowerShell gotchas:
 # String interpolation only works in double quotes "var: $good", not single quotes '$bad'
 # WebAdministration will not accept / or \ path delimiters, you MUST pass the correct one
 # Cannot use PowerShell to set ASP.NET Impersonation on a workstation, thanks SO MUCH for that
 # Set-ItemProperty parameters like applicationPool are case sensitive
-#
+# 
 $projectName = "myApp"
 $appPool = ".NET v4.5 Classic" 
-#Three web application folders are inside this location
+# Three web application folders are inside this location
 $sandbox = "C:\src\myApp\WebApp"
 $website = "Default Web Site"
 $clean = $false
@@ -26,10 +26,10 @@ $basicAuthFilter = "/system.webServer/security/authentication/basicAuthenticatio
 if ((Get-Module "WebAdministration" -ErrorAction SilentlyContinue) -eq $null){
 	Import-Module WebAdministration
 }
-#Servers Only
-#if ((Get-Module "ServerManager" -ErrorAction SilentlyContinue) -eq $null) {
-#	Import-Module ServerManager
-#}
+# Servers Only
+# if ((Get-Module "ServerManager" -ErrorAction SilentlyContinue) -eq $null) {
+# Import-Module ServerManager
+# }
 
 function Create-Application( [string]$appName, [string]$path ) {
 	if ( (Test-Path "IIS:\Sites\$website\$appName") -eq $false ) {
@@ -86,7 +86,7 @@ function Enable-AspNetImpersonation( [string]$appName ){
 # On a Server with ServerManager loaded, Set-WebConfigurationProperty may work
 # Since this script runs on a workstation, resort to shelling out to appcmd, as
 # it can handle the transacted call.  Otherwise the properties are read only
-#	Set-WebConfigurationProperty -filter system.web/identity -name impersonate -value $true -location "$website/$appName" 	
+# Set-WebConfigurationProperty -filter system.web/identity -name impersonate -value $true -location "$website/$appName" 	
 
 	$aspNetImpersonation = Get-WebConfigurationProperty -filter system.web/identity -name impersonate -location "$website/$appName"
 	if( $aspNetImpersonation.Value -eq $true ){
