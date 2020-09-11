@@ -11,7 +11,6 @@
 # Cannot use PowerShell to set ASP.NET Impersonation on a workstation, thanks SO MUCH for that
 # Set-ItemProperty parameters like applicationPool are case sensitive
 # 
-$projectName = "myApp"
 $appPool = ".NET v4.5 Classic" 
 # Three web application folders are inside this location
 $sandbox = "C:\src\myApp\WebApp"
